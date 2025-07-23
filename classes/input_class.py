@@ -3,24 +3,36 @@ import argparse
 
 class input_class:
     """
-    Manages XXXXXX
+    Handles command-line argument parsing.
 
+    This class manages user-specified options for reading and plotting
+    absorption data and collects input file paths based on glob-style patterns.
     """
 
     def __init__(self):
         """
-        Initializes input parameters.
-  
-         """
+        Initializes the input_class instance with default flags and file list.
+        """
 
         self.read_max_absorption = False
         self.plot_max_absorption = False
-        self.files = []
 
+        self.files = []
 
     def read_command_line(self, args):
         """
-        Parses command-line arguments and validates combinations.
+        Parses and validates command-line arguments.
+
+        Args:
+            args (list): List of command-line arguments (e.g., sys.argv[1:]).
+
+        Raises:
+            argparse.ArgumentError: If --read or --plot are given without --files.
+            FileNotFoundError: If any provided file pattern does not exist.
+
+        Side Effects:
+            Sets internal flags (read_max_absorption, plot_max_absorption)
+            and resolves the list of file patterns into actual paths.
         """
         parser = argparse.ArgumentParser()
         parser.add_argument('--read', action='store_true', help='Read absorption data')
