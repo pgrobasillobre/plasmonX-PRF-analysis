@@ -1,6 +1,6 @@
 import sys
 
-from functions import output
+from functions import output, plasmonX_analysis
 from classes import input_class 
 
 # ============================================================================================================ #
@@ -23,7 +23,7 @@ def main():
 
         # Select and execute the appropriate task
         if inp.read_max_absorption:
-            output.error("Reading absorption data is not implemented yet.")
+            plasmonX_analysis.read_absorption(inp)
         elif inp.plot_max_absorption:
             output.error("Plotting functionality is not implemented yet.")
 
