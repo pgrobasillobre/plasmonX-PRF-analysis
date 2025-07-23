@@ -36,11 +36,14 @@ def display_message(message):
    print("")
    print("")
    sys.exit()
+
 # -------------------------------------------------------------------------------------
 def save_natoms_abs_freq(natoms_abs_freq):
     """
     Saves number of atoms, maximum absorption, and associated frequency 
     extracted from plasmonX output files into a CSV file.
+
+    Removes exact duplicates (same number of atoms, same float values).
 
     Args:
         natoms_abs_freq: A list of [natoms, max_abs, max_freq] entries retrieved from each file.
@@ -50,13 +53,16 @@ def save_natoms_abs_freq(natoms_abs_freq):
     """
     output_file = "natoms_abs_freq.csv"
 
+    # Deduplicate using a set of exact (natoms, max_abs, max_freq) tuples
+    unique_entries = list({tuple(entry) for entry in natoms_abs_freq})
+
     with open(output_file, 'w') as f:
         f.write("# nAtoms Max_abs Associated_freq\n")
-        for entry in natoms_abs_freq:
-            natoms, max_abs, max_freq = entry
-            f.write(f"{natoms} {max_abs:.6f} {max_freq:.6f}\n")
+        for natoms, max_abs, max_freq in unique_entries:
+            f.write(f"{natoms} {max_abs:.10f} {max_freq:.10f}\n")
 
     display_message('File "natoms_abs_freq.csv" created.')
 # -------------------------------------------------------------------------------------
+
 
     
