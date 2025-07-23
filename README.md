@@ -8,7 +8,7 @@ It allows users to:
 - Plot the resonance frequency against the number of atoms.
 
 <p align="center">
-  <img src="_static/graphene_shapes.png" width="800">
+  <img src="_static/graphene_shapes.png" width="1200">
 </p>
 <p align="center">
   <em>Plot generated with plasmonX-PRF-analysis.</em>
