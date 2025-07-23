@@ -11,7 +11,7 @@ It allows users to:
   <img src="_static/graphene_shapes.png" width="1200">
 </p>
 <p align="center">
-  <em>Plot generated with plasmonX-PRF-analysis.</em>
+  <em>PRF as a function of the number of atoms on graphene samples with 4 different shapes.</em>
 </p>
 
 
