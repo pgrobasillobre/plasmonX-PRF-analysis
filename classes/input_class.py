@@ -1,3 +1,4 @@
+import os
 import argparse
 
 class input_class:
@@ -14,8 +15,7 @@ class input_class:
 
         self.read_max_absorption = False
         self.plot_max_absorption = False
-        self.file_patterns = []
-
+        self.files = []
 
 
     def read_command_line(self, args):
@@ -36,5 +36,10 @@ class input_class:
         # Save options
         self.read_max_absorption = options.read
         self.plot_max_absorption = options.plot
-        self.file_patterns = options.files or []
+        self.files = options.files or []
 
+        # Check files existence, otherwise raise an error
+        for pattern in self.files:
+            if not os.path.exists(pattern):
+                raise FileNotFoundError(f"File pattern '{pattern}' does not exist.")
+        

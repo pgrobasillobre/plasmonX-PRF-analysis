@@ -9,10 +9,9 @@ from classes import input_class
 #                                       Contact: pgrobasillobre@gmail.com                                      #
 # ============================================================================================================ #
 
-
 def main():
     """
-    Main function to XXXXXXXXXXX.
+    Main function to initialize input parameters and execute the appropriate task based on user input.
 
     Returns:
         None: Calls the relevant function based on the user's input.
@@ -22,11 +21,11 @@ def main():
         inp = input_class.input_class()
         inp.read_command_line(sys.argv[1:])
 
-        #general.read_command_line(sys.argv, inp)
-
         # Select and execute the appropriate task
         if inp.read_max_absorption:
-            pass
+            output.error("Reading absorption data is not implemented yet.")
+        elif inp.plot_max_absorption:
+            output.error("Plotting functionality is not implemented yet.")
 
     except Exception as e:
         output.error(f"An error occurred: {e}")
