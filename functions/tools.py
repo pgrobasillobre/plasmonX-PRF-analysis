@@ -84,3 +84,4 @@ def read_max_absorption(file):
 
     return found_values, max_abs, max_freq
 # -------------------------------------------------------------------------------------
+

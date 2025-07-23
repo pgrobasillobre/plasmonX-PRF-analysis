@@ -23,7 +23,7 @@ def main():
 
         # Select and execute the appropriate task
         if inp.read_max_absorption:
-            plasmonX_analysis.read_absorption(inp)
+            plasmonX_analysis.read_absorption_and_save(inp)
         elif inp.plot_max_absorption:
             output.error("Plotting functionality is not implemented yet.")
 

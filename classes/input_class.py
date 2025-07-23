@@ -8,7 +8,7 @@ class input_class:
     This class manages user-specified options for reading and plotting
     absorption data and collects input file paths based on glob-style patterns.
     """
-
+    # -------------------------------------------------------------------------------------
     def __init__(self):
         """
         Initializes the input_class instance with default flags and file list.
@@ -18,7 +18,7 @@ class input_class:
         self.plot_max_absorption = False
 
         self.files = []
-
+    # -------------------------------------------------------------------------------------
     def read_command_line(self, args):
         """
         Parses and validates command-line arguments.
@@ -54,4 +54,6 @@ class input_class:
         for pattern in self.files:
             if not os.path.exists(pattern):
                 raise FileNotFoundError(f"File pattern '{pattern}' does not exist.")
+    # -------------------------------------------------------------------------------------
+
         

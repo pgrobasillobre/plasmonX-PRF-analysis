@@ -2,10 +2,17 @@
 from functions import output, tools
 
 # -------------------------------------------------------------------------------------
-def read_absorption(inp):
+def read_absorption_and_save(inp):
     """
     Reads isotropic absorption data from specified plasmonX output files.
+
+    Args:
+        inp: An input_class instance containing a list of files to read.
+
+    Returns:
+        list: A list of [natoms, max_freq, max_abs] for each valid file.
     """
+    results = []
 
     for file in inp.files:
         # Initialize variables
@@ -21,8 +28,11 @@ def read_absorption(inp):
             print(f"Skipping {file}: absorption data not found.")
             continue
 
-        print(f"For file {file}, natoms = {natoms}, max_abs = {max_abs}, max_freq = {max_freq}")
+        #print(f"For file {file}, natoms = {natoms}, max_abs = {max_abs}, max_freq = {max_freq}")
 
+        # Append result as [natoms, max_freq, max_abs]
+        results.append([natoms, max_freq, max_abs])
 
-
+    output.save_natoms_abs_freq(results)
+ # -------------------------------------------------------------------------------------
 
