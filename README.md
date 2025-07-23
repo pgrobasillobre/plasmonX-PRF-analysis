@@ -75,7 +75,14 @@ python3 plasmonX-PRF-analysis --plot --files natoms_abs_freq.csv
 This generates `plot.png`, showing plasmon resonance frequency as a function of the number of atoms.
 
 
+## License
 
-## Requirements
+This code is licensed under the **GNU General Public License v3.0**.
 
-See `requirements.txt` for dependencies.
+## Contact
+
+For issues or contributions:
+
+- Email: **pgrobasillobre@gmail.com**
+- Github issues: https://github.com/pgrobasillobre/pytorch-image-colorizer/issues
+
