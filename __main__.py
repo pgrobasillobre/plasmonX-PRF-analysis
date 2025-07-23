@@ -25,7 +25,7 @@ def main():
         if inp.read_max_absorption:
             plasmonX_analysis.read_absorption_and_save(inp)
         elif inp.plot_max_absorption:
-            output.error("Plotting functionality is not implemented yet.")
+            output.read_and_plot(inp)
 
     except Exception as e:
         output.error(f"An error occurred: {e}")

@@ -1,4 +1,8 @@
 import sys
+import numpy as np
+
+import matplotlib.pyplot as plt
+import matplotlib
 
 # -------------------------------------------------------------------------------------
 def error(error_message):
@@ -63,6 +67,64 @@ def save_natoms_abs_freq(natoms_abs_freq):
 
     display_message('File "natoms_abs_freq.csv" created.')
 # -------------------------------------------------------------------------------------
+def read_and_plot(inp):
+    """
+    Reads isotropic absorption data from multiple CSV files and generates a horizontal subplot
+    figure showing Number of Atoms vs. Plasmon Resonance Frequency.
 
+    Each subplot uses a distinct marker and color.
 
-    
+    Args:
+        inp: An input_class instance containing a list of CSV file paths.
+
+    Returns:
+        None: Saves the plot as 'plot.png'.
+    """
+    # Set Times New Roman globally
+    matplotlib.rcParams['font.family'] = 'Times New Roman'
+
+    labelsize = 20
+    ticksize = 20
+
+    # Assume we will have a maximum of 5 plots simultaneously
+    markers = ['o', 's', '^', 'D', 'v']
+    colors = ['tab:blue', 'tab:orange', 'tab:green', 'tab:red', 'tab:purple']
+
+    num_files = len(inp.files)
+    fig, axes = plt.subplots(1, num_files, figsize=(6 * num_files, 5), sharey=True)
+
+    if num_files == 1:
+        axes = [axes]
+
+    for i, file in enumerate(inp.files):
+        x_vals = []
+        y_vals = []
+
+        with open(file, 'r') as f:
+            for line in f:
+                if line.startswith("#") or not line.strip():
+                    continue
+                parts = line.strip().split()
+                if len(parts) >= 3:
+                    x_vals.append(int(parts[0]))            # nAtoms
+                    y_vals.append(float(parts[2]))          # Associated_freq (eV)
+
+        ax = axes[i]
+        ax.scatter(
+            x_vals,
+            y_vals,
+            marker=markers[i % len(markers)],
+            color=colors[i % len(colors)],
+            s=80
+        )
+        ax.tick_params(axis='both', labelsize=ticksize)
+
+        if i == 0:
+            ax.set_ylabel("Plasmon Resonance Frequency (eV)", fontsize=labelsize)
+        ax.set_xlabel("Number of Atoms", fontsize=labelsize)
+
+    plt.tight_layout()
+    plt.subplots_adjust(wspace=0.2)  # or 0.5, 0.6, etc.
+    plt.savefig("plot.png", dpi=300)
+    #plt.show()
+# -------------------------------------------------------------------------------------
