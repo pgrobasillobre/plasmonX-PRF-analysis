@@ -84,5 +84,5 @@ This code is licensed under the **GNU General Public License v3.0**.
 For issues or contributions:
 
 - Email: **pgrobasillobre@gmail.com**
-- Github issues: https://github.com/pgrobasillobre/pytorch-image-colorizer/issues
+- Github issues: https://github.com/pgrobasillobre/plasmonX-PRF-analysis/issues
 
