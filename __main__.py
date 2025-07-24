@@ -23,7 +23,9 @@ def main():
 
         # Select and execute the appropriate task
         if inp.read_max_absorption:
-            plasmonX_analysis.read_absorption_and_save(inp)
+            plasmonX_analysis.read_atoms_absorption_freq_and_save(inp)
+        elif inp.read_file_max_absorption:
+            plasmonX_analysis.read_file_absorption_freq_and_save(inp)
         elif inp.plot_max_absorption:
             output.read_and_plot(inp)
 

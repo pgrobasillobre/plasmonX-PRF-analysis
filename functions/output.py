@@ -1,4 +1,5 @@
 import sys
+import os
 import numpy as np
 
 import matplotlib.pyplot as plt
@@ -127,4 +128,22 @@ def read_and_plot(inp):
     plt.subplots_adjust(wspace=0.2)  # or 0.5, 0.6, etc.
     plt.savefig("plot.png", dpi=300)
     #plt.show()
+# -------------------------------------------------------------------------------------
+def save_file_abs_freq(file_abs_freq):
+    """
+    Saves file name, maximum absorption, and associated frequency 
+    extracted from plasmonX output files into a TXT file.
+
+    Args:
+        file_abs_freq: A list of [file_path, max_abs, max_freq] entries retrieved from each file.
+
+    Returns:
+        None: The function creates 'file.txt' with the data.
+    """
+    output_file = os.path.splitext(file_abs_freq[0])[0] + ".txt"
+
+    with open(output_file, 'w') as f:
+        f.write(f"{os.path.basename(file_abs_freq[0])}    {file_abs_freq[1]:.10f}    {file_abs_freq[2]:.10f}\n")
+
+    print(f"File {output_file} created.")
 # -------------------------------------------------------------------------------------

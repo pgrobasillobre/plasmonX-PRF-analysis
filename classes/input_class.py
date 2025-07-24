@@ -1,6 +1,8 @@
 import os
 import argparse
 
+from functions import output
+
 class input_class:
     """
     Handles command-line argument parsing.
@@ -35,18 +37,25 @@ class input_class:
             and resolves the list of file patterns into actual paths.
         """
         parser = argparse.ArgumentParser()
-        parser.add_argument('--read', action='store_true', help='Read absorption data')
+        parser.add_argument('--read_atom', action='store_true', help='Read absorption data associated to number of atoms')
+        parser.add_argument('--read_file', action='store_true', help='Read absorption data associated to geometry file')
+
         parser.add_argument('--plot', action='store_true', help='Plot absorption spectra')
         parser.add_argument('--files', nargs='+', help='List of file patterns to process')
 
         options = parser.parse_args(args)
 
         # Validate that --files is only used with --read or --plot
-        if (options.read and not options.files) or (options.plot and not options.files):
-            parser.error("--read or --plot + --files must be specified together.")
+        if (options.read_atom and not options.files) or (options.plot and not options.files):
+            parser.error("--read_atom, --read_file or --plot + --files must be specified together.")
+
+        # Validate only 1 file is parsed for read_file_max_absorption
+        if (options.read_file and len(self.files) > 1):
+            parser.error("--read_file only allows parsing a single file in --files.")
 
         # Save options
-        self.read_max_absorption = options.read
+        self.read_max_absorption = options.read_atom
+        self.read_file_max_absorption = options.read_file
         self.plot_max_absorption = options.plot
         self.files = options.files or []
 
