@@ -52,7 +52,7 @@ functions/
 Run the following command to analyze a set of output files:
 
 ```
-python3 plasmonX-PRF-analysis/ --read_atoms --files plasmonX-PRF-analysis/data/plasmonX-output-examples/*log
+python3 plasmonX-PRF-analysis/ --read_atom --files plasmonX-PRF-analysis/data/plasmonX-output-examples/*log
 ```
 
 This generates the file `natoms_abs_freq.csv` containing:
