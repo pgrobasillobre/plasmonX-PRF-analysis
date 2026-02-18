@@ -51,6 +51,7 @@ def read_file_absorption_freq_and_save(inp):
     max_absorption = 0.0
 
     # Read the file
+    natoms = tools.read_natoms(inp.files[0])
     found_values, max_abs, max_freq= tools.read_max_absorption(inp.files[0])
 
     # Skip this loop cycle if not absorption was found
@@ -59,7 +60,7 @@ def read_file_absorption_freq_and_save(inp):
         sys.exit()
 
     # Append result as [file, max_freq, max_abs]
-    results = [inp.files[0], max_freq, max_abs]
+    results = [inp.files[0], natoms, max_freq, max_abs]
 
     output.save_file_abs_freq(results)
 # -------------------------------------------------------------------------------------

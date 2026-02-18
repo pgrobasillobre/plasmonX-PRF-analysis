@@ -29,12 +29,22 @@ def read_natoms(file):
 
     # First find atom header. Then sticks header. Store atom number. Stop when new sticks header is encountered.
     for line in open(file, 'r'):
-        if (found_sticks_1) and (line.startswith(param.header_sticks)): break
-        if (found_header == True and found_sticks_1 == True): natoms = int(line.split()[0])
-        if line.startswith(param.header_atoms): found_header = True
-        if (found_header == True) and (line.startswith(param.header_sticks)): found_sticks_1 = True
-        
-    
+       s = line.split()
+       if not s:           # blank / whitespace-only line
+           continue
+
+       if found_sticks_1 and line.startswith(param.header_sticks):
+           break
+
+       if found_header and found_sticks_1:
+           natoms = int(s[0])   # safe because s is non-empty
+
+       if line.startswith(param.header_atoms):
+           found_header = True
+
+       if found_header and line.startswith(param.header_sticks):
+           found_sticks_1 = True
+
     return natoms  # Replace with actual logic to read natoms from the file
 # -------------------------------------------------------------------------------------
 def read_max_absorption(file):

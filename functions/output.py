@@ -60,6 +60,7 @@ def save_natoms_abs_freq(natoms_abs_freq):
 
     # Deduplicate using a set of exact (natoms, max_abs, max_freq) tuples
     unique_entries = list({tuple(entry) for entry in natoms_abs_freq})
+    unique_entries.sort(key=lambda t: t[0]) # sort by atoms
 
     with open(output_file, 'w') as f:
         f.write("# nAtoms Max_abs Associated_freq\n")
@@ -143,7 +144,7 @@ def save_file_abs_freq(file_abs_freq):
     output_file = os.path.splitext(file_abs_freq[0])[0] + ".txt"
 
     with open(output_file, 'w') as f:
-        f.write(f"{os.path.basename(file_abs_freq[0])}    {file_abs_freq[1]:.10f}    {file_abs_freq[2]:.10f}\n")
+        f.write(f"{os.path.basename(file_abs_freq[0])} {file_abs_freq[1]:20d}   {file_abs_freq[2]:.10f}    {file_abs_freq[3]:.10f}\n")
 
     print(f"File {output_file} created.")
 # -------------------------------------------------------------------------------------
