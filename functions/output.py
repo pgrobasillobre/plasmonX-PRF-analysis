@@ -161,7 +161,6 @@ def save_file_directional_prfs(result):
     output_file = os.path.splitext(result["csv_file"])[0] + ".txt"
 
     with open(output_file, 'w') as f:
-        f.write("# filename.csv natoms Intensity_PRF-X Intensity_PRF-Y Intensity_PRF-Z PRF-X PRF-Y PRF-Z\n")
         f.write(
             f"{os.path.basename(result['csv_file'])} "
             f"{result['natoms']:20d} "
@@ -204,5 +203,33 @@ def save_all_directional_prfs(results):
                 f"{result['intensities']['z']:.10f}\n"
             )
 
+    print(f"File {output_file} created.")
+# -------------------------------------------------------------------------------------
+def save_skipped_files(skipped_files):
+    """
+    Saves skipped XYZ/CSV inputs and the reason they were skipped.
+
+    Args:
+        skipped_files: List of (file_path, reason) tuples.
+
+    Returns:
+        None: The function creates or removes 'skipped.err'.
+    """
+
+    output_file = "skipped.err"
+
+    if not skipped_files:
+        if os.path.exists(output_file):
+            os.remove(output_file)
+        return
+
+    with open(output_file, 'w') as f:
+        f.write("# file reason\n")
+        for skipped_file, reason in skipped_files:
+            f.write(f"{skipped_file} {reason}\n")
+
+    print("")
+    print("Some XYZ files did not have a matching CSV file, or could not be processed.")
+    print(f"The skipped geometries are reported in {output_file}.")
     print(f"File {output_file} created.")
 # -------------------------------------------------------------------------------------

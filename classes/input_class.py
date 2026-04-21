@@ -72,9 +72,10 @@ class input_class:
         self.plot_max_absorption = options.plot
         self.files = options.files or []
 
-        # Check files existence, otherwise raise an error
+        # Check files existence, otherwise raise an error. The XYZ/CSV mode
+        # handles missing files itself so it can report all skipped inputs.
         for pattern in self.files:
-            if not os.path.exists(pattern):
+            if not options.read_xyz_csv and not os.path.exists(pattern):
                 raise FileNotFoundError(f"File pattern '{pattern}' does not exist.")
     # -------------------------------------------------------------------------------------
 

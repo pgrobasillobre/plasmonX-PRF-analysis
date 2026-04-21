@@ -1,4 +1,5 @@
 import sys
+import os
 
 from functions import output, tools
 
@@ -76,14 +77,24 @@ def read_xyz_csv_directional_prfs_and_save(inp):
     """
 
     results = []
+    skipped_files = []
 
     for xyz_file in inp.files:
+        if not os.path.exists(xyz_file):
+            skipped_files.append((xyz_file, "XYZ file not found"))
+            continue
+
+        try:
+            csv_file = tools.find_matching_csv(xyz_file)
+        except FileNotFoundError:
+            skipped_files.append((xyz_file, "matching CSV file not found"))
+            continue
+
         natoms = tools.read_xyz_natoms(xyz_file)
-        csv_file = tools.find_matching_csv(xyz_file)
         found_values, prfs, intensities = tools.read_directional_prfs_from_csv(csv_file)
 
         if not found_values:
-            print(f"Skipping {csv_file}: directional spectrum data not found.")
+            skipped_files.append((csv_file, "directional spectrum data not found"))
             continue
 
         result = {
@@ -96,9 +107,13 @@ def read_xyz_csv_directional_prfs_and_save(inp):
         results.append(result)
         output.save_file_directional_prfs(result)
 
-    if not results:
+    if results:
+        output.save_all_directional_prfs(results)
+    else:
         print("No directional PRF data found.")
-        sys.exit()
 
-    output.save_all_directional_prfs(results)
+    output.save_skipped_files(skipped_files)
+
+    if not results:
+        sys.exit()
 # -------------------------------------------------------------------------------------
