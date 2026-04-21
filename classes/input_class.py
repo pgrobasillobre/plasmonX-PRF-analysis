@@ -17,6 +17,8 @@ class input_class:
         """
 
         self.read_max_absorption = False
+        self.read_file_max_absorption = False
+        self.read_xyz_csv_directional_prfs = False
         self.plot_max_absorption = False
 
         self.files = []
@@ -39,6 +41,11 @@ class input_class:
         parser = argparse.ArgumentParser()
         parser.add_argument('--read_atom', action='store_true', help='Read absorption data associated to number of atoms')
         parser.add_argument('--read_file', action='store_true', help='Read absorption data associated to geometry file')
+        parser.add_argument(
+            '--read_xyz_csv',
+            action='store_true',
+            help='Read XYZ files, find same-name CSV spectra, and extract directional PRFs'
+        )
 
         parser.add_argument('--plot', action='store_true', help='Plot absorption spectra')
         parser.add_argument('--files', nargs='+', help='List of file patterns to process')
@@ -46,16 +53,22 @@ class input_class:
         options = parser.parse_args(args)
 
         # Validate that --files is only used with --read or --plot
-        if (options.read_atom and not options.files) or (options.plot and not options.files):
-            parser.error("--read_atom, --read_file or --plot + --files must be specified together.")
+        if (
+            (options.read_atom and not options.files) or
+            (options.read_file and not options.files) or
+            (options.read_xyz_csv and not options.files) or
+            (options.plot and not options.files)
+        ):
+            parser.error("--read_atom, --read_file, --read_xyz_csv or --plot + --files must be specified together.")
 
         # Validate only 1 file is parsed for read_file_max_absorption
-        if (options.read_file and len(self.files) > 1):
+        if (options.read_file and len(options.files) > 1):
             parser.error("--read_file only allows parsing a single file in --files.")
 
         # Save options
         self.read_max_absorption = options.read_atom
         self.read_file_max_absorption = options.read_file
+        self.read_xyz_csv_directional_prfs = options.read_xyz_csv
         self.plot_max_absorption = options.plot
         self.files = options.files or []
 

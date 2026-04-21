@@ -64,3 +64,41 @@ def read_file_absorption_freq_and_save(inp):
 
     output.save_file_abs_freq(results)
 # -------------------------------------------------------------------------------------
+def read_xyz_csv_directional_prfs_and_save(inp):
+    """
+    Reads XYZ files, finds their associated CSV spectra, and extracts directional PRFs.
+
+    Args:
+        inp: An input_class instance containing a list of XYZ files to read.
+
+    Returns:
+        list: A list of result dictionaries for each valid XYZ/CSV pair.
+    """
+
+    results = []
+
+    for xyz_file in inp.files:
+        natoms = tools.read_xyz_natoms(xyz_file)
+        csv_file = tools.find_matching_csv(xyz_file)
+        found_values, prfs, intensities = tools.read_directional_prfs_from_csv(csv_file)
+
+        if not found_values:
+            print(f"Skipping {csv_file}: directional spectrum data not found.")
+            continue
+
+        result = {
+            "csv_file": csv_file,
+            "natoms": natoms,
+            "prfs": prfs,
+            "intensities": intensities,
+        }
+
+        results.append(result)
+        output.save_file_directional_prfs(result)
+
+    if not results:
+        print("No directional PRF data found.")
+        sys.exit()
+
+    output.save_all_directional_prfs(results)
+# -------------------------------------------------------------------------------------

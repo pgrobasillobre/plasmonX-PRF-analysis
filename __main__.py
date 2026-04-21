@@ -26,6 +26,8 @@ def main():
             plasmonX_analysis.read_atoms_absorption_freq_and_save(inp)
         elif inp.read_file_max_absorption:
             plasmonX_analysis.read_file_absorption_freq_and_save(inp)
+        elif inp.read_xyz_csv_directional_prfs:
+            plasmonX_analysis.read_xyz_csv_directional_prfs_and_save(inp)
         elif inp.plot_max_absorption:
             output.read_and_plot(inp)
 

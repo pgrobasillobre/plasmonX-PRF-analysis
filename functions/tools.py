@@ -1,3 +1,5 @@
+import os
+
 from functions import output
 
 from classes import parameters
@@ -94,4 +96,101 @@ def read_max_absorption(file):
 
     return found_values, max_abs, max_freq
 # -------------------------------------------------------------------------------------
+def read_xyz_natoms(file):
+    """
+    Reads the number of atoms from an XYZ geometry file.
 
+    The XYZ format stores the number of atoms in the first line.
+
+    Args:
+        file (str): Path to the XYZ file.
+
+    Returns:
+        int: Number of atoms declared in the XYZ file.
+    """
+
+    with open(file, 'r') as f:
+        first_line = f.readline().strip()
+
+    return int(first_line)
+# -------------------------------------------------------------------------------------
+def find_matching_csv(xyz_file):
+    """
+    Finds the CSV file associated with an XYZ file using the same base name.
+
+    Args:
+        xyz_file (str): Path to the XYZ file.
+
+    Returns:
+        str: Path to the matching CSV file.
+
+    Raises:
+        FileNotFoundError: If the matching CSV file does not exist.
+    """
+
+    csv_file = os.path.splitext(xyz_file)[0] + ".csv"
+
+    if not os.path.exists(csv_file):
+        raise FileNotFoundError(f"Matching CSV file '{csv_file}' does not exist.")
+
+    return csv_file
+# -------------------------------------------------------------------------------------
+def read_directional_prfs_from_csv(file):
+    """
+    Reads directional plasmon resonance frequencies from a plasmonX spectrum CSV file.
+
+    The file is whitespace-separated. Columns are interpreted as:
+        1  -> frequency in eV
+        11 -> absorption along x
+        12 -> absorption along y
+        13 -> absorption along z
+
+    The PRF for each direction is taken as the frequency at the maximum absorption
+    in that direction.
+
+    Args:
+        file (str): Path to the CSV file.
+
+    Returns:
+        tuple:
+            - found_values (bool): True if spectrum data was found.
+            - prfs (dict): Directional PRFs with keys x, y, z.
+            - intensities (dict): Directional maximum intensities with keys x, y, z.
+    """
+
+    rows = []
+
+    for line in open(file, 'r'):
+        stripped_line = line.strip()
+
+        if not stripped_line or stripped_line.startswith("#"):
+            continue
+
+        parts = stripped_line.replace(",", " ").split()
+
+        if len(parts) < 13:
+            continue
+
+        try:
+            rows.append({
+                "freq": float(parts[0]),
+                "x": float(parts[10]),
+                "y": float(parts[11]),
+                "z": float(parts[12]),
+            })
+        except ValueError:
+            continue
+
+    if not rows:
+        return False, {}, {}
+
+    prfs = {}
+    intensities = {}
+
+    for direction in ("x", "y", "z"):
+        max_row = max(rows, key=lambda row: row[direction])
+        prfs[direction] = max_row["freq"]
+        intensities[direction] = max_row[direction]
+
+    return True, prfs, intensities
+# -------------------------------------------------------------------------------------

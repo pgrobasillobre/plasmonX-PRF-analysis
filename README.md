@@ -4,6 +4,7 @@ This repository provides tools to analyze plasmon resonance frequencies (PRFs) f
 
 It allows users to:
 - Extract the **maximum isotropic absorption** and associated **plasmon resonance frequency** from a set of plasmonX `.log` files.
+- Extract directional **PRF-X**, **PRF-Y**, and **PRF-Z** values from plasmonX spectrum `.csv` files associated with `.xyz` geometries.
 - Save the results into a CSV file.
 - Plot the resonance frequency against the number of atoms.
 
@@ -74,6 +75,30 @@ python3 plasmonX-PRF-analysis --plot --files natoms_abs_freq.csv
 
 This generates `plot.png`, showing plasmon resonance frequency as a function of the number of atoms.
 
+### 3. Extract directional PRFs from `.xyz` and `.csv` files
+
+Run the following command with one or more `.xyz` files:
+
+```bash
+python3 plasmonX-PRF-analysis --read_xyz_csv --files structure.xyz
+```
+
+For each `structure.xyz`, the program looks for `structure.csv` in the same directory.
+The CSV spectrum is read as whitespace- or comma-separated data, using:
+
+```
+column 1  = frequency in eV
+column 11 = absorption along x
+column 12 = absorption along y
+column 13 = absorption along z
+```
+
+This creates one `structure.txt` file per structure and one combined `all_prfs.csv` file with:
+
+```
+# filename.csv natoms PRF-x PRF-y PRF-z Intensity_PRF-X Intensity_PRF-y Intensity_PRF-z
+```
+
 
 ## License
 
@@ -85,4 +110,3 @@ For issues or contributions:
 
 - Email: **pgrobasillobre@gmail.com**
 - Github issues: https://github.com/pgrobasillobre/plasmonX-PRF-analysis/issues
-

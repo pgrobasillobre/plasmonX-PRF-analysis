@@ -1,9 +1,5 @@
 import sys
 import os
-import numpy as np
-
-import matplotlib.pyplot as plt
-import matplotlib
 
 # -------------------------------------------------------------------------------------
 def error(error_message):
@@ -82,6 +78,9 @@ def read_and_plot(inp):
     Returns:
         None: Saves the plot as 'plot.png'.
     """
+    import matplotlib
+    import matplotlib.pyplot as plt
+
     # Set Times New Roman globally
     matplotlib.rcParams['font.family'] = 'Times New Roman'
 
@@ -145,6 +144,65 @@ def save_file_abs_freq(file_abs_freq):
 
     with open(output_file, 'w') as f:
         f.write(f"{os.path.basename(file_abs_freq[0])} {file_abs_freq[1]:20d}   {file_abs_freq[2]:.10f}    {file_abs_freq[3]:.10f}\n")
+
+    print(f"File {output_file} created.")
+# -------------------------------------------------------------------------------------
+def save_file_directional_prfs(result):
+    """
+    Saves directional PRFs and maximum intensities for one CSV/XYZ pair into a TXT file.
+
+    Args:
+        result: Dictionary containing filename, natoms, prfs, and intensities.
+
+    Returns:
+        None: The function creates a TXT file with the same base name as the CSV file.
+    """
+
+    output_file = os.path.splitext(result["csv_file"])[0] + ".txt"
+
+    with open(output_file, 'w') as f:
+        f.write("# filename.csv natoms Intensity_PRF-X Intensity_PRF-Y Intensity_PRF-Z PRF-X PRF-Y PRF-Z\n")
+        f.write(
+            f"{os.path.basename(result['csv_file'])} "
+            f"{result['natoms']:20d} "
+            f"{result['intensities']['x']:.10f} "
+            f"{result['intensities']['y']:.10f} "
+            f"{result['intensities']['z']:.10f} "
+            f"{result['prfs']['x']:.10f} "
+            f"{result['prfs']['y']:.10f} "
+            f"{result['prfs']['z']:.10f}\n"
+        )
+
+    print(f"File {output_file} created.")
+# -------------------------------------------------------------------------------------
+def save_all_directional_prfs(results):
+    """
+    Saves directional PRFs and maximum intensities for all CSV/XYZ pairs.
+
+    Args:
+        results: List of dictionaries containing filename, natoms, prfs, and intensities.
+
+    Returns:
+        None: The function creates 'all_prfs.csv'.
+    """
+
+    output_file = "all_prfs.csv"
+
+    sorted_results = sorted(results, key=lambda result: result["natoms"])
+
+    with open(output_file, 'w') as f:
+        f.write("# filename.csv natoms PRF-x PRF-y PRF-z Intensity_PRF-X Intensity_PRF-y Intensity_PRF-z\n")
+        for result in sorted_results:
+            f.write(
+                f"{os.path.basename(result['csv_file'])} "
+                f"{result['natoms']:20d} "
+                f"{result['prfs']['x']:.10f} "
+                f"{result['prfs']['y']:.10f} "
+                f"{result['prfs']['z']:.10f} "
+                f"{result['intensities']['x']:.10f} "
+                f"{result['intensities']['y']:.10f} "
+                f"{result['intensities']['z']:.10f}\n"
+            )
 
     print(f"File {output_file} created.")
 # -------------------------------------------------------------------------------------
